@@ -13,3 +13,17 @@
 .font {
 	font-family: cursive;
 }
+
+button {
+	background-color: green;
+	color: white;
+	font: inherit;
+	border: 2px solid red;
+	padding: 8px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: lightgreen;
+	color: black;
+}

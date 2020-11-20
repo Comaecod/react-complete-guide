@@ -51,19 +51,6 @@ class App extends Component {
 	};
 
 	render = () => {
-		const styleObj = {
-			backgroundColor : 'green',
-			color           : 'white',
-			font            : 'inherit',
-			border          : '2px solid red',
-			padding         : '8px',
-			cursor          : 'pointer',
-			':hover'        : {
-				backgroundColor : 'lightgreen',
-				color           : 'black'
-			}
-		};
-
 		let persons = null;
 
 		if (this.state.showPersons) {
@@ -80,12 +67,6 @@ class App extends Component {
 					))}
 				</div>
 			);
-
-			styleObj.backgroundColor = 'red';
-			styleObj[':hover'] = {
-				backgroundColor : 'salmon',
-				color           : 'black'
-			};
 		}
 
 		const new_class = [];
@@ -104,7 +85,7 @@ class App extends Component {
 			<div className='App'>
 				<h1>Comaecod's React App</h1>
 				<p className={new_class.join(' ')}>This is cool!</p>
-				<button style={styleObj} onClick={this.togglePersonsHandler}>
+				<button className='button' onClick={this.togglePersonsHandler}>
 					Toggle Name
 				</button>
 				{persons}
