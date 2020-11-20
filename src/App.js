@@ -13,14 +13,6 @@ class App extends Component {
 		showPersons : false
 	};
 
-	styleObj = {
-		backgroundColor : 'white',
-		font            : 'inherit',
-		border          : '2px solid red',
-		padding         : '8px',
-		cursor          : 'pointer'
-	};
-
 	switchNameHandler = (event, id) => {
 		//Getting the value of respective index of person from the original state array
 		const personIndex = this.state.persons.findIndex((p) => p.id === id);
@@ -59,6 +51,19 @@ class App extends Component {
 	};
 
 	render = () => {
+		const styleObj = {
+			backgroundColor : 'green',
+			color           : 'white',
+			font            : 'inherit',
+			border          : '2px solid red',
+			padding         : '8px',
+			cursor          : 'pointer',
+			':hover'        : {
+				backgroundColor : 'lightgreen',
+				color           : 'black'
+			}
+		};
+
 		let persons = null;
 
 		if (this.state.showPersons) {
@@ -75,13 +80,31 @@ class App extends Component {
 					))}
 				</div>
 			);
+
+			styleObj.backgroundColor = 'red';
+			styleObj[':hover'] = {
+				backgroundColor : 'salmon',
+				color           : 'black'
+			};
+		}
+
+		const new_class = [];
+
+		if (this.state.persons.length <= 3) {
+			new_class.push('red');
+		}
+		if (this.state.persons.length <= 2) {
+			new_class.push('bold');
+		}
+		if (this.state.persons.length <= 1) {
+			new_class.push('font');
 		}
 
 		return (
 			<div className='App'>
 				<h1>Comaecod's React App</h1>
-				<p>This is cool!</p>
-				<button style={this.styleObj} onClick={this.togglePersonsHandler}>
+				<p className={new_class.join(' ')}>This is cool!</p>
+				<button style={styleObj} onClick={this.togglePersonsHandler}>
 					Toggle Name
 				</button>
 				{persons}
