@@ -2,20 +2,13 @@ import React from 'react';
 import classes from './Person.css';
 
 const person = (props) => {
-	// Customized Error
-	const rand = Math.random();
-
-	if (rand > 0.7) {
-		throw new Error('Oops! Random Value is greater!!!');
-	}
-
 	return (
 		<div className={classes.Person}>
-			<p onClick={props.clicked}>
+			<p onClick={props.click}>
 				I am from {props.name} and I am {props.age} years old
 			</p>
 			<p>{props.children}</p>
-			<input type='text' onChange={props.changed} value={props.name} />
+			<input type='text' onChange={props.change} value={props.name} />
 		</div>
 	);
 };
