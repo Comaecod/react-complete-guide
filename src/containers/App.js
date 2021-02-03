@@ -17,7 +17,8 @@ class App extends Component {
 				{ id: 'vis6', name: 'Sakshi Sangtani', job: 'Data Analyst' },
 				{ id: 'vis7', name: 'Abdullah Sayyad', job: 'Marketing Counsellor' }
 			],
-			showPersons : false
+			showPersons : false,
+			showCockpit : true
 		};
 	}
 
@@ -33,6 +34,20 @@ class App extends Component {
 	componentDidMount () {
 		console.log('[App.js] componentDidMount');
 	}
+
+	shouldComponentUpdate () {
+		console.log('[App.js] shouldComponentUpdate');
+		return true;
+	}
+
+	componentDidUpdate () {
+		console.log('[App.js] componentDidUpdate');
+	}
+
+	toggleCockpitHandler = () => {
+		const doesShow = this.state.showCockpit;
+		this.setState({ showCockpit: !doesShow });
+	};
 
 	nameChangedHandler = (event, id) => {
 		const personIndex = this.state.persons.findIndex((p) => p.id === id);
@@ -74,12 +89,15 @@ class App extends Component {
 
 		return (
 			<div className={classes.App}>
-				<Cockpit
-					cockpitTitle={this.props.appTitle}
-					showPersons={this.state.showPersons}
-					persons={this.state.persons}
-					clicked={this.togglePersonsHandler}
-				/>
+				<button onClick={this.toggleCockpitHandler}>Toggle Cockpit</button>
+				{
+					this.state.showCockpit ? <Cockpit
+						cockpitTitle={this.props.appTitle}
+						showPersons={this.state.showPersons}
+						personsLength={this.state.persons.length}
+						clicked={this.togglePersonsHandler}
+					/> :
+					null}
 				{persons}
 			</div>
 		);
