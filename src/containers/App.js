@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import withClassAnother from '../hoc/withClassAnother';
+import Aux from '../hoc/Auxiliary';
+import AuthContext from '../context/auth-context';
 
 class App extends Component {
 	constructor (props) {
 		super(props);
 		console.log('[App.js] constructor');
 		this.state = {
-			persons     : [
+			persons       : [
 				{ id: 'vis1', name: 'Vishnu Vardhan', job: 'Developer' },
 				{ id: 'vis2', name: 'Hina Raiba', job: 'Graphics Designer' },
 				{ id: 'vis3', name: 'Shivendu Saurabh', job: 'Chartered Accountant' },
@@ -17,8 +20,10 @@ class App extends Component {
 				{ id: 'vis6', name: 'Sakshi Sangtani', job: 'Data Analyst' },
 				{ id: 'vis7', name: 'Abdullah Sayyad', job: 'Marketing Counsellor' }
 			],
-			showPersons : false,
-			showCockpit : true
+			showPersons   : false,
+			showCockpit   : true,
+			counter       : 0,
+			authenticated : false
 		};
 	}
 
@@ -26,10 +31,6 @@ class App extends Component {
 		console.log('[App.js] getDerivedStateFromProps', props);
 		return state;
 	}
-
-	// componentWillMount () {
-	// 	console.log('[App.js] componentWillMount');
-	// }
 
 	componentDidMount () {
 		console.log('[App.js] componentDidMount');
@@ -57,7 +58,20 @@ class App extends Component {
 			...this.state.persons
 		];
 		persons[personIndex] = person;
-		this.setState({ persons: persons });
+
+		// this.setState({
+		// 	persons : persons,
+		// 	counter : this.state.counter + 1
+		// });
+
+		// This is a better approach for updating the state corerctly. The one below:
+
+		this.setState((prevState, props) => {
+			return {
+				persons : persons,
+				counter : prevState.counter + 1
+			};
+		});
 	};
 
 	deletePersonHandler = (personIndex) => {
@@ -71,6 +85,10 @@ class App extends Component {
 	togglePersonsHandler = () => {
 		const doesShow = this.state.showPersons;
 		this.setState({ showPersons: !doesShow });
+	};
+
+	loginHandler = () => {
+		this.setState({ authenticated: true });
 	};
 
 	render = () => {
@@ -88,20 +106,26 @@ class App extends Component {
 		}
 
 		return (
-			<div className={classes.App}>
+			<Aux>
 				<button onClick={this.toggleCockpitHandler}>Toggle Cockpit</button>
-				{
-					this.state.showCockpit ? <Cockpit
-						cockpitTitle={this.props.appTitle}
-						showPersons={this.state.showPersons}
-						personsLength={this.state.persons.length}
-						clicked={this.togglePersonsHandler}
-					/> :
-					null}
-				{persons}
-			</div>
+				<AuthContext.Provider
+					value={{
+						authenticated : this.state.authenticated,
+						login         : this.loginHandler
+					}}>
+					{
+						this.state.showCockpit ? <Cockpit
+							cockpitTitle={this.props.appTitle}
+							showPersons={this.state.showPersons}
+							personsLength={this.state.persons.length}
+							clicked={this.togglePersonsHandler}
+						/> :
+						null}
+					{persons}
+				</AuthContext.Provider>
+			</Aux>
 		);
 	};
 }
 
-export default App;
+export default withClassAnother(App, classes.App);

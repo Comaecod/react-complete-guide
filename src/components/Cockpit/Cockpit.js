@@ -1,12 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import classes from './Cockpit.css';
+import AuthContext from '../../context/auth-context';
 
 const cockpit = (props) => {
+	const toggleBtnRef = useRef(null);
+
+	const context = useContext(AuthContext);
+
 	useEffect(() => {
 		console.log('[Cockpit.js] useEffect');
 		const timer = setTimeout(() => {
-			alert('Customized useEffect() calling only once...');
+			// alert('Customized useEffect() calling only once...');
+			toggleBtnRef.current.click();
 		}, 1000);
+
+		console.log('[Cockpit.js] Context: ', context.authenticated);
+
 		return () => {
 			clearTimeout(timer);
 			console.log('Cleanup work of useEffect');
@@ -41,9 +50,10 @@ const cockpit = (props) => {
 		<div className={classes.Cockpit}>
 			<h1>{props.cockpitTitle}</h1>
 			<p className={new_class.join(' ')}>This is cool!</p>
-			<button className={btnClass} onClick={props.clicked}>
+			<button ref={toggleBtnRef} className={btnClass} onClick={props.clicked}>
 				Toggle Name
 			</button>
+			<button onClick={context.login}>Log In</button>
 		</div>
 	);
 };
